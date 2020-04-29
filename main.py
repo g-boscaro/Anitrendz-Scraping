@@ -1,13 +1,26 @@
 #Lógica principal do scrap
-from pegaPagina import pegaPagina
-from filtroHTML import filtraPagina
+from requestPagina import pegaPagina
+from filtroHTML import analisaPagina, filtroCabecalho, filtroCorpo
 
 urlInicial = "https://anitrendz.net/charts/top-anime/"
 
 #Request da pagina
 paginaCrua = pegaPagina(urlInicial)
 
-temporada, data, semana = filtraPagina(paginaCrua)
+#Parser HTMl
+paginaAnalisada = analisaPagina(paginaCrua)
 
-print("Temporada: %s \nData Chart: %s  " % (temporada, data))
-print("Semana: " % semana)
+#Filtro cabeçalho
+temporada, data, semana = filtroCabecalho(paginaAnalisada)
+
+#print("Cabeçalho")
+#print("Temporada: %s \nData Chart: %s \nSemana: %s" % (temporada, data, semana))
+
+corpo = filtroCorpo(paginaAnalisada)
+
+print(len(corpo))
+print(corpo)
+
+#for entrada in corpo:
+    
+    #print(entrada, end='\n'*2)

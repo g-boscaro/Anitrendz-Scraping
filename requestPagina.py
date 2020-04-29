@@ -9,6 +9,7 @@ def pegaPagina(url):
     print("Status code: %s" % pagina.status_code)
     print("URL da Pagina: %s" % pagina.headers["Location"])
     print("Tipo conteúdo: %s" % pagina.headers['content-type'])
+    print()
     #print("Redirecionamentos: %s" % pagina.history)
 
     return pagina
