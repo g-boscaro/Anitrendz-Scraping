@@ -54,6 +54,8 @@ def loopEntradas(entradaGrafico):
             semanasTop = semanasTop.text.strip()
 
         #adicionando as informações para uma lista de dicionarios
-        listaEntradas.append({"Rank":posicaoRank, "Titulo":tituloEntrada, "Estudio":estudioEntrada})
+        listaEntradas.append({"Rank":posicaoRank, "Titulo":tituloEntrada, "Estudio":estudioEntrada, 
+            "Mudanca":statusMovimentacao, "Movimentacao":numeroMovimentacao, "MaiorPosicao": posicaoMaisAlta,
+            "PosicaoAnterior":posicaoAnterior, "SemanasTop":semanasTop})
 
     return listaEntradas
