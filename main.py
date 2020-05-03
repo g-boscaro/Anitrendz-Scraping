@@ -1,7 +1,7 @@
 #Lógica principal do scrap
 
 from requestPagina import pegaPagina
-from filtroHTML import analisaPagina, filtroCorpo, encontraCabecalho, encontraClasse
+from filtroHTML import analisaPagina, filtroCorpo, encontraCabecalho, encontraClasse, loopEntradas
 
 urlInicial = "https://anitrendz.net/charts/top-anime/"
 #urlInicial = "https://anitrendz.net/zurb"
@@ -9,6 +9,7 @@ urlInicial = "https://anitrendz.net/charts/top-anime/"
 #Request da pagina
 paginaCrua = pegaPagina(urlInicial)
 
+#Tratamento se a página não foi encontrada
 if paginaCrua == None:
     exit()
 
@@ -23,10 +24,13 @@ else:
     dataGrafico = encontraClasse(cabecalho, 'div', "at-cth-b-date")
     semanaTemporada = encontraClasse(cabecalho, 'div', "at-cth-b-week-no")
 
-    
 
-    corpo = filtroCorpo(paginaAnalisada)
 
+    corpoGrafico = filtroCorpo(paginaAnalisada)
+
+    listaEntradas = loopEntradas(corpoGrafico)
+
+    print(listaEntradas)
 
     #for entrada in corpo:
 

@@ -31,23 +31,29 @@ def filtroCorpo(paginaAnalisada):
     return entradaGrafico
 
 def loopEntradas(entradaGrafico):    
+    listaEntradas = []
+    
     for entrada in entradaGrafico:
         #Detalhes Entrada
+        posicaoRank = entrada.find('div', class_="at-mcc-e-rank").text.strip()
         tituloEntrada = entrada.find('div', class_="entry-title").text.strip()
         estudioEntrada = entrada.find('div', class_="entry-detail").text.strip()
 
         #Movimentação Entrada
         arrowEntrada = entrada.find('div', class_="arrow-container")
         statusMovimentacao = arrowEntrada.find('img')['alt']
-        
         numeroMovimentacao = entrada.find('div', class_="arrow-number").text.strip()
 
         #Status Entrada
         statusEntrada = entrada.find('div', class_="stats")
         posicaoMaisAlta = statusEntrada.find('div', class_="peak stats-entry").text.strip()
         posicaoAnterior = statusEntrada.find('div', class_="prev stats-entry").text.strip()
-        semanasTop = statusEntrada.find('div', class_="weeks stats-entry").text.strip()
+        semanasTop = statusEntrada.find('div', class_="weeks stats-entry")
 
-        posicaoRank = entrada.find('div', class_="at-mcc-e-rank").text.strip()
+        if semanasTop != None:
+            semanasTop = semanasTop.text.strip()
 
-    return entradaGrafico
+        #adicionando as informações para uma lista de dicionarios
+        listaEntradas.append({"Rank":posicaoRank, "Titulo":tituloEntrada, "Estudio":estudioEntrada})
+
+    return listaEntradas
