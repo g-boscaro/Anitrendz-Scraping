@@ -1,7 +1,7 @@
 #Lógica principal do scrap
 
 from requestPagina import pegaPagina
-from filtroHTML import analisaPagina, filtroCabecalho, filtroCorpo
+from filtroHTML import analisaPagina, filtroCorpo, encontraCabecalho, encontraClasse
 
 urlInicial = "https://anitrendz.net/charts/top-anime/"
 #urlInicial = "https://anitrendz.net/zurb"
@@ -13,14 +13,17 @@ if paginaCrua == None:
     exit()
 
 else:
-    #Parser HTMl
+    #Análise HTMl com a função que chama o bs4
     paginaAnalisada = analisaPagina(paginaCrua)
 
     #Filtro cabeçalho
-    temporada, data, semana = filtroCabecalho(paginaAnalisada)
+    #temporada, data, semana = filtroCabecalho(paginaAnalisada)
+    cabecalho = encontraCabecalho(paginaAnalisada)
+    temporada = encontraClasse(cabecalho, 'div', "at-cth-top-season")
+    dataGrafico = encontraClasse(cabecalho, 'div', "at-cth-b-date")
+    semanaTemporada = encontraClasse(cabecalho, 'div', "at-cth-b-week-no")
 
-    #print("Cabeçalho")
-    #print("Temporada: %s \nData Chart: %s \nSemana: %s" % (temporada, data, semana))
+    
 
     corpo = filtroCorpo(paginaAnalisada)
 
