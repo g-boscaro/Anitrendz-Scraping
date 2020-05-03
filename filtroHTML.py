@@ -45,4 +45,4 @@ def filtroCorpo(paginaAnalisada):
 
         posicaoRank = entrada.find('div', class_="at-mcc-e-rank").text.strip()
 
-    return dictEntradas
+    return entradaGrafico
