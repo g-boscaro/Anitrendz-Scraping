@@ -1,4 +1,5 @@
-#Filtra usando o beautiful soup
+#--------------------------------Explicito é melhor do que implicito-----------------------
+#Programa que filtra paginas HTML usando o beautiful soup
 
 #importa a lib
 from bs4 import BeautifulSoup

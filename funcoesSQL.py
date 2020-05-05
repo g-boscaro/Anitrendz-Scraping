@@ -89,8 +89,26 @@ cursorSQL = criaCursor(sqlConectado) #Cria cursor
 
 #----------------Usando DB-------------------
 usaDB(cursorSQL, "teste") #Usa cursor para acessar banco de dados "teste"
-listaTables = listaTabelas(cursorSQL) #Lista tabelas no banco de dados acessado
-print(listaTables)
+#listaTables = listaTabelas(cursorSQL) #Lista tabelas no banco de dados acessado
+#print(listaTables)
+
+#----------------INSERT-------------------
+import queriesSQL
+queryInsert = queriesSQL.queryInsert
+cursorSQL.execute(queryInsert)
+print(cursorSQL.rowcount, "registros inseridos")
+
+#----------------SELECT-------------------
+querySelect = ("SELECT * FROM tabela1")
+querySelect = ("SELECT coluna2, coluna3 FROM tabela1")
+cursorSQL.execute(querySelect)
+
+for (coluna2, coluna3) in cursorSQL:
+  print(coluna2, coluna3)
+print()
+
+#----------------COMMIT------------------------
+sqlConectado.commit()
 
 #------------Fechando Conexões----------------
 fechaCursor(cursorSQL)
