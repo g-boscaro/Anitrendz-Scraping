@@ -1,25 +1,64 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-#Faz a conexão com o DB
-def conexaoSQL():
-  mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="1234"
-  )
-  return mydb
+#Faz a conexão com o MYSQL
+def conectaSQL():
+  try:
+    conexaoSQL = mysql.connector.connect(
+      host="localhost",
+      user="root",
+      passwd="1234"
+    )
+    print("Conexão com SQL feita!")
+    return conexaoSQL
 
-#Cria um noto database
-#def criaDB(mydb):
-#  mycursor = mydb.cursor()
-#  mycursor.execute("CREATE DATABASE mydatabase")
+  except mysql.connector.Error as error:
+    if error.errno == errorcode.ER_BAD_DB_ERROR:
+      print("Database nao existe")
+    
+    elif error.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+      print("Usuario ou senha incorretos")
+    
+    else:
+      print(error)
+    
+  else:
+    conexaoSQL.close()
+    print("Conexao com SQL encerrada")
+
+def desconectaSQL(conexaoSQL):
+  conexaoSQL.close() #Desconecta do mysql
+  print("Desconectado do MySQL")
 
 #Cria cursor SQL
-def criaCursor(dbUsado):
-  cursorSQL = dbUsado.cursor()
+def criaCursor(conexaoSQL):
+  cursorSQL = conexaoSQL.cursor()
+  print("Criando cursor: %s" % cursorSQL)
   return cursorSQL
+#Fecha cursor
+def fechaCursor(cursorCriado):
+  cursorCriado.close()
+  print("Fechando o cursor: %s" % cursorCriado)
 
+#Cria um noto database
+def criaDB(cursorUsado, nomeDatabase):
+  cursorUsado.execute("CREATE DATABASE %s" % nomeDatabase)
+  print("Criado database: %s" % nomeDatabase)
+
+#Conecta ao DB selecionado
+def usaDB(cursorUsado, dbConectado):
+  try:
+    cursorUsado.execute("USE %s" % dbConectado)
+    print("Conectado ao DB: %s" % dbConectado)
+  
+  except mysql.connector.Error as error:
+      if error.errno == errorcode.ER_BAD_DB_ERROR:
+        print("Database nao existe")
+      
+      else:
+        print(error)
+
+#Lista os banco de dados do servidor
 def listaDB(cursorUsado):
   cursorUsado.execute("SHOW DATABASES")
 
@@ -29,10 +68,30 @@ def listaDB(cursorUsado):
   
   return lista
 
-bancoDados = conexaoSQL()
+#Lista tabelas no DB indicado
+def listaTabelas(cursorUsado):
+  cursorUsado.execute("SHOW TABLES")
+  tabelas = []
+  for tabela in cursorUsado:
+    tabelas.append(tabela)
+  return tabelas
 
-cursorSQL = criaCursor(bancoDados)
 
-listaDBS = listaDB(cursorSQL)
 
-print(listaDBS)
+
+
+
+#---------------Conexao SQL---------------
+sqlConectado = conectaSQL() #Conecta ao MySQL
+cursorSQL = criaCursor(sqlConectado) #Cria cursor
+#listaBancos = listaDB(cursorSQL) #Cria lista de bancos de dados
+#print(listaBancos)
+
+#----------------Usando DB-------------------
+usaDB(cursorSQL, "teste") #Usa cursor para acessar banco de dados "teste"
+listaTables = listaTabelas(cursorSQL) #Lista tabelas no banco de dados acessado
+print(listaTables)
+
+#------------Fechando Conexões----------------
+fechaCursor(cursorSQL)
+desconectaSQL(sqlConectado)
