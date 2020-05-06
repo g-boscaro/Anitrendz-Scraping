@@ -3,6 +3,8 @@
 
 #importa a lib
 from bs4 import BeautifulSoup
+from datetime import datetime
+import re
 
 def analisaPagina(pagina):
     paginaAnalisada = BeautifulSoup(pagina.content, 'html.parser')
@@ -17,12 +19,21 @@ def encontraCabecalho(paginaAnalisada):
 def encontraClasse(paginaAnalisada, taghtml, classehtml):
     return paginaAnalisada.find(taghtml, class_=classehtml).text.strip()
 
-#def filtroCabecalho(paginaAnalisada):
-#    #.strip() remove os espaços em branco da string
-#    temporada = paginaAnalisada.find('div', class_="at-cth-top-season").text.strip()
-#    dataGrafico = cabecalhoGrafico.find('div', class_="at-cth-b-date").text.strip()
-#    semanaTemporada = cabecalhoGrafico.find('div', class_="at-cth-b-week-no").text.strip()
-#    return temporada, dataGrafico, semanaTemporada
+def filtroCabecalho(paginaAnalisada):
+    cabecalhoGrafico = paginaAnalisada.find('div', id="at-chart-top-header")
+    #.strip() remove os espaços em branco da string
+    temporada = cabecalhoGrafico.find('div', class_="at-cth-top-season").text.strip()
+    temporadaConvertida = re.search(r"(\w+) \d+", temporada).group
+
+    dataGrafico = cabecalhoGrafico.find('div', class_="at-cth-b-date").text.strip()
+    dataConvertida = datetime.strptime(dataGrafico, "%B %d, %Y").date()
+
+    semanaTemporada = cabecalhoGrafico.find('div', class_="at-cth-b-week-no").text.strip()
+    numeroSemana = re.search(r"\d+" ,semanaTemporada).group()
+    
+    dictCabecalho = {"Temporada": temporadaConvertida, "DataGrafico": dataConvertida, "SemanaTemporada": numeroSemana}
+
+    return dictCabecalho
 
 def filtroCorpo(paginaAnalisada):
     #Corpo do gráfico
@@ -60,3 +71,4 @@ def loopEntradas(entradaGrafico):
             "PosicaoAnterior":posicaoAnterior, "SemanasTop":semanasTop})
 
     return listaEntradas
+

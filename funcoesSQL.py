@@ -1,3 +1,5 @@
+#--------------------------------Explicito é melhor do que implicito-----------------------
+
 import queriesSQL
 import mysql.connector
 from mysql.connector import errorcode
@@ -113,7 +115,7 @@ selectTudo(cursorSQL,"tabela1")
 
 #----------------COMMIT------------------------
 #sqlConectado.commit()
-#pritn("Commitando as informações para a tabela")
+#print("Commitando as informações para a tabela")
 
 #------------Fechando Conexões----------------
 fechaCursor(cursorSQL)
