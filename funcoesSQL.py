@@ -1,3 +1,4 @@
+import queriesSQL
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -42,7 +43,7 @@ def fechaCursor(cursorCriado):
 
 #Cria um noto database
 def criaDB(cursorUsado, nomeDatabase):
-  cursorUsado.execute("CREATE DATABASE %s" % nomeDatabase)
+  cursorUsado.execute("CREATE DATABASE IF NOT EXISTS %s" % nomeDatabase)
   print("Criado database: %s" % nomeDatabase)
 
 #Conecta ao DB selecionado
@@ -68,7 +69,7 @@ def listaDB(cursorUsado):
   
   return lista
 
-#Lista tabelas no DB indicado
+#Lista tabelas
 def listaTabelas(cursorUsado):
   cursorUsado.execute("SHOW TABLES")
   tabelas = []
@@ -76,8 +77,17 @@ def listaTabelas(cursorUsado):
     tabelas.append(tabela)
   return tabelas
 
+#Funcao SELECT *
+def selectTudo(cursor, nomeTabela):
+  querySelect = queriesSQL.selectAll %(nomeTabela)
+  #querySelect = ("SELECT coluna2, coluna3 FROM tabela1")
+  cursor.execute(querySelect)
 
+  resultadoQuery = cursor.fetchall()
 
+  for elemento in resultadoQuery:
+    print(elemento)
+  print()
 
 
 
@@ -93,22 +103,17 @@ usaDB(cursorSQL, "teste") #Usa cursor para acessar banco de dados "teste"
 #print(listaTables)
 
 #----------------INSERT-------------------
-import queriesSQL
-queryInsert = queriesSQL.queryInsert
-cursorSQL.execute(queryInsert)
-print(cursorSQL.rowcount, "registros inseridos")
+
+#queryInsert = queriesSQL.queryInsert
+#cursorSQL.execute(queryInsert)
+#print(cursorSQL.rowcount, "registros inseridos")
 
 #----------------SELECT-------------------
-querySelect = ("SELECT * FROM tabela1")
-querySelect = ("SELECT coluna2, coluna3 FROM tabela1")
-cursorSQL.execute(querySelect)
-
-for (coluna2, coluna3) in cursorSQL:
-  print(coluna2, coluna3)
-print()
+selectTudo(cursorSQL,"tabela1")
 
 #----------------COMMIT------------------------
-sqlConectado.commit()
+#sqlConectado.commit()
+#pritn("Commitando as informações para a tabela")
 
 #------------Fechando Conexões----------------
 fechaCursor(cursorSQL)
