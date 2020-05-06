@@ -14,6 +14,7 @@ if paginaCrua == None:
     exit()
 
 else:
+    print("----------Iniciando Filtro----------")
     #Análise do HTML com a função que chama o bs4
     paginaAnalisada = analisaPagina(paginaCrua)
     print("Analisando pagina HTML...")
@@ -36,8 +37,8 @@ else:
         entrada.update(dictCabecalho)
         #print(entrada)
     
-    #print(listaEntradas[10:13], end='\n'*2)
-
-    #for entrada in corpo:
-
-        #print(entrada, end='\n'*2)
+    print("Mostrando os 3 primeiros registros do dicionario")
+    for entrada in listaEntradas[0:3]:
+        print(entrada, end='\n'*2)
+    
+    print("----------Encerrando Filtro----------")

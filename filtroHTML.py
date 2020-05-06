@@ -23,10 +23,10 @@ def filtroCabecalho(paginaAnalisada):
     cabecalhoGrafico = paginaAnalisada.find('div', id="at-chart-top-header")
     #.strip() remove os espaços em branco da string
     temporada = cabecalhoGrafico.find('div', class_="at-cth-top-season").text.strip()
-    temporadaConvertida = re.search(r"(\w+) \d+", temporada).group
+    temporadaConvertida = re.search(r"(\w+) \d+", temporada).group()
 
     dataGrafico = cabecalhoGrafico.find('div', class_="at-cth-b-date").text.strip()
-    dataConvertida = datetime.strptime(dataGrafico, "%B %d, %Y").date()
+    dataConvertida = str(datetime.strptime(dataGrafico, "%B %d, %Y").date())
 
     semanaTemporada = cabecalhoGrafico.find('div', class_="at-cth-b-week-no").text.strip()
     numeroSemana = re.search(r"\d+" ,semanaTemporada).group()
