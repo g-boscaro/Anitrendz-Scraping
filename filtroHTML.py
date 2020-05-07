@@ -42,7 +42,7 @@ def filtroCorpo(paginaAnalisada):
     entradaGrafico = corpoGrafico.find_all('div', class_="at-mcc-entry")
     return entradaGrafico
 
-def loopEntradas(entradaGrafico):    
+def extraiAtributos(entradaGrafico):    
     listaEntradas = []
     
     for entrada in entradaGrafico:
@@ -72,3 +72,11 @@ def loopEntradas(entradaGrafico):
 
     return listaEntradas
 
+def encontraURLPaginacao(cabecalhoGrafico):
+    pegaClasse = cabecalhoGrafico.find("div", class_="prev-page")
+    if pegaClasse == None:
+        return pegaClasse
+    else:
+        pegaURL = pegaClasse.find("a")["href"]
+
+    return pegaURL

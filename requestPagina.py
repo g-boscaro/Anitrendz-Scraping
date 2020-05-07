@@ -16,12 +16,11 @@ def pegaPagina(url):
         return None
 
     if paginaStatusCode == 404 and '404 Not Found' in pagina.text:
-        print("Pagina não encontrada")
         return None
 
     else:
         print("Status code: %s" % paginaStatusCode)
-        print("URL da Pagina: %s" % pagina.headers["Location"])
+        #print("URL da Pagina: %s" % pagina.headers["Location"])
         print("Tipo conteúdo: %s" % pagina.headers['content-type'])
         print("----------Encerrando Request----------", end="\n"*2)
         return pagina
