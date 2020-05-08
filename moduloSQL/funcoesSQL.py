@@ -1,7 +1,7 @@
 #--------------------------------Explicito é melhor do que implicito-----------------------
-import queriesSQL
 import mysql.connector
 from mysql.connector import errorcode
+import moduloSQL.queries.queriesSQL as queriesSQL
 
 #Faz a conexão com o MYSQL
 def conectaSQL():
@@ -72,7 +72,7 @@ def listaDB(cursorUsado):
 
 #Cria tabela
 def criaTabela(cursorUsado, nomeTabela, stringColunas):
-  cursorUsado.execute(queriesSQL.criaTabela.format(nomeTabela, stringColunas))
+  cursorUsado.execute(queriesSQL.criandoTabela.format(nomeTabela, stringColunas))
   print("Criada tabela {}".format(nomeTabela))
 
 #Lista tabelas
@@ -94,4 +94,9 @@ def selectTudo(cursor, nomeTabela):
   for elemento in resultadoQuery:
     print(elemento)
   print()
+
+def insertTabela(valoresColunas, cursor, nomeTabela, stringColunas, lista):
+  querydocaralho = queriesSQL.queryInsert %(nomeTabela, stringColunas, valoresColunas)
+  cursor.executemany(querydocaralho, lista)
+  print(cursor.rowcount, "registros inseridos")
 

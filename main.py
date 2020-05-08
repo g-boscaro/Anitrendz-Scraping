@@ -6,6 +6,8 @@ from filtroHTML import analisaPagina, filtroCorpo, filtroCabecalho, encontraCabe
 from filtroHTML import encontraClasse, extraiAtributos, encontraURLPaginacao
 from time import sleep
 
+import moduloSQL.funcoesSQL as funcoesSQL
+
 def extraiInformacoes(url):
     #Request da pagina
     paginaCrua = pegaPagina(url)
@@ -73,8 +75,35 @@ urlInicial = "https://anitrendz.net/charts/top-anime/"
 urlAnterior = "https://anitrendz.net/charts/top-anime/2014-01-31"
 
 paginaAtual, listaEntradas = extraiInformacoes(urlInicial)
-listaTodas = raspaTodasPaginas(urlAnterior)
+#listaTodas = raspaTodasPaginas(urlAnterior)
 
 
+#SQL
+#---------------Conexao SQL---------------
+print("------------------------------------------------------------")
+sqlConectado = funcoesSQL.conectaSQL() #Conecta ao MySQL
+cursorSQL = funcoesSQL.criaCursor(sqlConectado) #Cria cursor
 
-print(listaTodas)
+#----------------Usando DB-------------------
+funcoesSQL.usaDB(cursorSQL, "ANITRENDZ") #Usa cursor para acessar banco de dados "teste"
+
+#Insere informações na tabela Anitrendz
+#funcoesSQL.insertTabela(cursor=cursorSQL, nomeTabela="entradas", 
+#stringColunas= algumasColunas, valoresColunas = stringValores, lista=listaEntradas)
+
+query = "INSERT INTO entradas (`POSICAO_RANK`, `TITULO`, `ESTUDIO`, `ALTERACAO_RANK`, `MOVIMENTACAO_RANK`, `POSICAO_MAIS_ALTA`, `POSICAO_ANTERIOR`, `SEMANAS_TOP`, `TEMPORADA`, `DATA_GRAFICO`, `NUMERO_SEMANA`) VALUES (%(Rank)s, %(Titulo)s, %(Estudio)s, %(Mudanca)s, %(Movimentacao)s, %(MaiorPosicao)s, %(PosicaoAnterior)s, %(SemanasTop)s, %(Temporada)s, %(DataGrafico)s, %(SemanaTemporada)s)"
+
+cursorSQL.executemany(query, listaEntradas)
+print("Inserindo informacoes na tabela")
+print(cursorSQL.rowcount, "registros inseridos")
+
+
+funcoesSQL.selectTudo(cursorSQL, "entradas")
+
+sqlConectado.commit()
+print("Commitando informacoes")
+
+funcoesSQL.fechaCursor(cursorSQL)
+funcoesSQL.desconectaSQL(sqlConectado)
+print("Cursor e conexao fechados")
+

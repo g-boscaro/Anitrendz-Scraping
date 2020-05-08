@@ -2,11 +2,11 @@
 
 #Arquivo que possui diversas queries SQL
 
-queryInsert = "INSERT INTO tabela1 (COLUNA2, COLUNA3, COLUNA4) VALUES ('Outro Fido', '1994-06-09', 5)"
+queryInsert = """INSERT INTO %s (%s) VALUES (%s)"""
 
 selectAll = "SELECT * FROM %s"
 
-criaTabela = "CREATE TABLE {} ({})"
+criandoTabela = "CREATE TABLE {} ({})"
 
 criaTabelaEntradas = """CREATE TABLE IF NOT EXISTS Entradas (ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 POSICAO_RANK INT(2), TITULO VARCHAR(100), ESTUDIO VARCHAR(100), ALTERACAO_RANK VARCHAR(10), 
