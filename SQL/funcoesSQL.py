@@ -1,5 +1,4 @@
 #--------------------------------Explicito é melhor do que implicito-----------------------
-
 import queriesSQL
 import mysql.connector
 from mysql.connector import errorcode
@@ -71,6 +70,11 @@ def listaDB(cursorUsado):
   
   return lista
 
+#Cria tabela
+def criaTabela(cursorUsado, nomeTabela, stringColunas):
+  cursorUsado.execute(queriesSQL.criaTabela.format(nomeTabela, stringColunas))
+  print("Criada tabela {}".format(nomeTabela))
+
 #Lista tabelas
 def listaTabelas(cursorUsado):
   cursorUsado.execute("SHOW TABLES")
@@ -91,32 +95,3 @@ def selectTudo(cursor, nomeTabela):
     print(elemento)
   print()
 
-
-
-#---------------Conexao SQL---------------
-sqlConectado = conectaSQL() #Conecta ao MySQL
-cursorSQL = criaCursor(sqlConectado) #Cria cursor
-#listaBancos = listaDB(cursorSQL) #Cria lista de bancos de dados
-#print(listaBancos)
-
-#----------------Usando DB-------------------
-usaDB(cursorSQL, "teste") #Usa cursor para acessar banco de dados "teste"
-#listaTables = listaTabelas(cursorSQL) #Lista tabelas no banco de dados acessado
-#print(listaTables)
-
-#----------------INSERT-------------------
-
-#queryInsert = queriesSQL.queryInsert
-#cursorSQL.execute(queryInsert)
-#print(cursorSQL.rowcount, "registros inseridos")
-
-#----------------SELECT-------------------
-selectTudo(cursorSQL,"tabela1")
-
-#----------------COMMIT------------------------
-#sqlConectado.commit()
-#print("Commitando as informações para a tabela")
-
-#------------Fechando Conexões----------------
-fechaCursor(cursorSQL)
-desconectaSQL(sqlConectado)

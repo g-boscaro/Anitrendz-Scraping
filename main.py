@@ -2,8 +2,8 @@
 #Lógica principal do scrap
 
 from requestPagina import pegaPagina
-from filtroHTML import analisaPagina, filtroCorpo, filtroCabecalho
-from filtroHTML import encontraCabecalho, encontraClasse, extraiAtributos, encontraURLPaginacao
+from filtroHTML import analisaPagina, filtroCorpo, filtroCabecalho, encontraCabecalho
+from filtroHTML import encontraClasse, extraiAtributos, encontraURLPaginacao
 from time import sleep
 
 def extraiInformacoes(url):
@@ -48,7 +48,7 @@ def extraiInformacoes(url):
         print("--------------------------------------------------", end= "\n"*2)
     return paginaAnalisada, listaEntradas
 
-def raspaTodasPaginas(urlInicial):
+def raspaTodasPaginas(url):
     paginaAtual, listaEntradas = extraiInformacoes(urlInicial)
     linkPaginaAnterior = ""
 
@@ -66,11 +66,15 @@ def raspaTodasPaginas(urlInicial):
             paginaAtual, novaListaEntradas = extraiInformacoes(linkPaginaAnterior)
             listaEntradas.extend(novaListaEntradas)
             print("Quantidade de registros na lista: %s" % len(listaEntradas))
-            sleep(2)
+            print("Esperando 30 segundos para solicitar a próxima pagina...")
+            sleep(30)
 
 urlInicial = "https://anitrendz.net/charts/top-anime/"
 urlAnterior = "https://anitrendz.net/charts/top-anime/2014-01-31"
-paginaAtual, listaEntradas = extraiInformacoes(urlInicial)
 
+paginaAtual, listaEntradas = extraiInformacoes(urlInicial)
 listaTodas = raspaTodasPaginas(urlAnterior)
+
+
+
 print(listaTodas)
